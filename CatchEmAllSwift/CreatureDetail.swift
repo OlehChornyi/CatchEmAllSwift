@@ -1,24 +1,29 @@
 //
-//  Creatures.swift
+//  CreatureDetail.swift
 //  CatchEmAllSwift
 //
-//  Created by Oleh on 04.02.2025.
+//  Created by Oleh on 05.02.2025.
 //
 
 import Foundation
 
 @Observable
-class Creatures {
+class CreatureDetail {
     
     private struct Returned: Codable {
-        var count: Int
-        var next: String
-        var results: [Creature]
+        var height: Double
+        var weight: Double
+        var sprites: Sprite
     }
     
-    var urlString = "https://pokeapi.co/api/v2/pokemon/"
-    var count = 0
-    var creaturesArray: [Creature] = []
+    struct Sprite: Codable {
+        var front_default: String
+    }
+    
+    var urlString = ""
+    var height = 0.0
+    var weight = 0.0
+    var imageUrl = ""
     
     func getData() async {
         print("🕸️ We are accessing the URL \(urlString)")
@@ -37,10 +42,9 @@ class Creatures {
                 print("🤬 JSON ERROR: Could not decode returned JSON data")
                 return
             }
-            print("😎 JSON returned! count \(returned.count), next: \(returned.next)")
-            self.count = returned.count
-            self.urlString = returned.next
-            self.creaturesArray = returned.results
+            self.height = returned.height
+            self.weight = returned.weight
+            self.imageUrl = returned.sprites.front_default
         } catch {
             print("🤬 ERROR: Could not get data from \(urlString)")
         }
